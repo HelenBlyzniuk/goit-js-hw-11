@@ -18,23 +18,23 @@ let page = 1;
  
 async function onLoadMoreClick(e) {
   page += 1;
-  
+
 
 }
 
 async function onFormSubmit(e) {
   e.preventDefault();
   let name = e.target.elements.searchQuery.value.trim();
-  console.log(name);
+  
   if (name === '') {
     Notiflix.Notify.failure('Enter data you want to find');
+    return;
   }
  
   const { data:{hits} } = await fetchPhoto(name, page);
-  
-  
-  if (hits === []) {
-    Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again')
+  console.log(hits);
+  if (hits.length === 0) {
+    Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');
   }
   else {
     const galleryItems = await galleryMarkup(hits);
