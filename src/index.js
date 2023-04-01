@@ -11,35 +11,59 @@ const refs = {
     gallery: document.querySelector('.gallery'),
     btnLoadMore:document.querySelector('.load-more'),
 }
+const form = document.querySelector('#search-form');
 
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoadMore.addEventListener('click', onLoadMoreClick)
-let page = 1;
+
+
+let params = {
+  page: 1,
+  name:''
+}
  
+let totalAmount = 0;
 async function onLoadMoreClick(e) {
-  page += 1;
-
-
+  params.page += 1;
+  totalAmount -= 40;
+  
+  if (totalAmount <= 0) {
+    refs.btnLoadMore.classList.add('is-hidden');
+    Notiflix.Notify.warning('There is no photo left');
+    return
+    
+  } else {
+    const { data: {hits} } = await fetchPhoto(params);
+    const galleryItems = await galleryMarkup(hits);
+    refs.gallery.insertAdjacentHTML('beforeend', galleryItems);
+    Notiflix.Notify.success(`Still ${totalAmount} photos left`)
+  }
+  
 }
 
 async function onFormSubmit(e) {
+ 
   e.preventDefault();
-  let name = e.target.elements.searchQuery.value.trim();
+  let total = 0;
+  total+=e;
+  console.log(total)
+  params.name = e.target.elements.searchQuery.value.trim();
   
-  if (name === '') {
+  if (params.name === '') {
     Notiflix.Notify.failure('Enter data you want to find');
     return;
   }
  
-  const { data:{hits} } = await fetchPhoto(name, page);
-  console.log(hits);
+  const { data: { hits, totalHits } } = await fetchPhoto(params);
+  totalAmount = totalHits;
+  Notiflix.Notify.success(`We have found ${totalAmount} photos for you`);
+  console.log(totalHits);
   if (hits.length === 0) {
     Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');
   }
   else {
     const galleryItems = await galleryMarkup(hits);
-    
-    refs.gallery.innerHTML = galleryItems;
+    refs.gallery.insertAdjacentHTML('beforeend', galleryItems);
     refs.btnLoadMore.classList.remove('is-hidden');
    
   }
