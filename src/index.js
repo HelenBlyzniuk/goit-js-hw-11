@@ -1,53 +1,49 @@
-// import debounce from 'lodash.debounce';
-// import Notiflix from 'notiflix';
 
-// import './css/styles.css';
-// import fetchCountryName  from './fetchCountries.js';
+import Notiflix from 'notiflix';
+import axios from 'axios';
+import './css/styles.css';
+import { fetchPhoto }  from './fetchPhoto.js'
 
  
 
-// const refs = {
-//     inputEl: document.querySelector('#search-box'),
-//     listEl: document.querySelector('.country-list'),
-//     divEl: document.querySelector('.country-info'),
-// }
+const refs = {
+    formEl: document.querySelector('#search-form'),
+    gallery: document.querySelector('.gallery'),
+    btnLoadMore:document.querySelector('.load-more'),
+}
 
-// let debounce = require('lodash.debounce');
-// const DEBOUNCE_DELAY = 300;
-// refs.inputEl.addEventListener('input', debounce(onCountryInput, DEBOUNCE_DELAY));
+refs.formEl.addEventListener("submit", onFormSubmit);
 
 
-// function onCountryInput(e) {
-//     let countryName = e.target.value.trim();
+
+async function onFormSubmit(e) {
+e.preventDefault();
+    let name = e.target.searchQuery.value.trim();
+    console.log(name);
     
-//     if (countryName === '') {
-//         if (refs.listEl.innerHTML !== '' || refs.divEl.innerHTML !== '') {
-//             refs.divEl.innerHTML = '';
-//             refs.listEl.innerHTML = '';
-//         }
-//         return
-//     }
-//     fetchCountryName(countryName)
-//         .then(data => {
-//             if (data.length > 10) {
-//                 Notiflix.Notify.success('Too many matches found. Please enter a more specific name.');
+    const pictures = await fetchPhoto(name);
+    console.log(pictures);
+    // fetchCountryName(countryName)
+    //     .then(data => {
+    //         if (data.length > 10) {
+    //             Notiflix.Notify.success('Too many matches found. Please enter a more specific name.');
                 
-//             }  if (data.length >= 2 && data.length <= 10) {
+    //         }  if (data.length >= 2 && data.length <= 10) {
         
-//                 refs.divEl.innerHTML = '';
-//                 refs.listEl.innerHTML = markupForSymbols(data);
+    //             refs.divEl.innerHTML = '';
+    //             refs.listEl.innerHTML = markupForSymbols(data);
 
-//             }  if (data.length === 1) {
-//                 refs.listEl.innerHTML = '';
-//                 console.log(data)
-//                 refs.divEl.innerHTML = markupForCountry(data); 
-//             } 
-//         })
-//         .catch(error => {
-//         console.log(error);
-//         Notiflix.Notify.warning('Oops, there is no country with that name');})
+    //         }  if (data.length === 1) {
+    //             refs.listEl.innerHTML = '';
+    //             console.log(data)
+    //             refs.divEl.innerHTML = markupForCountry(data); 
+    //         } 
+    //     })
+    //     .catch(error => {
+    //     console.log(error);
+    //     Notiflix.Notify.warning('Oops, there is no country with that name');})
          
-// }
+}
 
 
 // function markupForSymbols(array) {
