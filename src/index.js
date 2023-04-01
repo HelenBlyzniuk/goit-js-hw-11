@@ -13,31 +13,48 @@ const refs = {
 }
 
 refs.formEl.addEventListener("submit", onFormSubmit);
-
+refs.btnLoadMore.addEventListener('click', onLoadMoreClick)
 let page = 1;
+ 
+async function onLoadMoreClick(e) {
+  page += 1;
+  
 
-async function onFormSubmit(e) {
-    e.preventDefault();
-    let name = e.target.elements.searchQuery.value.trim();
-    console.log(name);
-    if (name === '') {
-     Notiflix.Notify.failure('Enter data you want to find');   
-    }
-    
-    const pictures = await fetchPhoto(name, page);
-    if (pictures === []) {
-      Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');  
-    } 
-    console.log(pictures);
 }
 
+async function onFormSubmit(e) {
+  e.preventDefault();
+  let name = e.target.elements.searchQuery.value.trim();
+  console.log(name);
+  if (name === '') {
+    Notiflix.Notify.failure('Enter data you want to find');
+  }
+ 
+  const { data:{hits} } = await fetchPhoto(name, page);
+  
+  
+  if (hits === []) {
+    Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again')
+  }
+  else {
+    const galleryItems = await galleryMarkup(hits);
+    
+    refs.gallery.innerHTML = galleryItems;
+    refs.btnLoadMore.classList.remove('is-hidden');
+   
+  }
+} 
+
+
+
 function galleryMarkup(array) {
-    const markup = array.map(({
+    return array.map(({
         webformatURL,
         largeImageURL,
         tags,
         likes,
         views,
+        comments,
         downloads }) => {
         return ` <div class="photo-card">
         <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
