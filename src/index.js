@@ -13,11 +13,12 @@ const refs = {
     btnLoadMore:document.querySelector('.load-more'),
 }
 const form = document.querySelector('#search-form');
+refs.gallery.setAttribute('uk-lightbox', 'caption-position:bottom');
 let gallery = new SimpleLightbox('.gallery a');
 
 refs.formEl.addEventListener("submit", onFormSubmit);
-refs.btnLoadMore.addEventListener('click', onLoadMoreClick)
-
+refs.btnLoadMore.addEventListener('click', onLoadMoreClick);
+refs.gallery.addEventListener('click', onGalleryClick);
 
 let params = {
   page: 1,
@@ -77,7 +78,10 @@ async function onLoadMoreClick(e) {
     const galleryItems = await galleryMarkup(hits);
     refs.gallery.insertAdjacentHTML('beforeend', galleryItems);
     Notiflix.Notify.success(`Still ${totalAmount} photos left`)
+    gallery.refresh();
   }
+  
+
   
 }
 
@@ -90,7 +94,7 @@ function galleryMarkup(array) {
         views,
         comments,
         downloads }) => {
-      return ` <div class="photo-card">
+      return `
         <a href="${ webformatURL}">
         <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
       <div class="info">
@@ -108,7 +112,7 @@ function galleryMarkup(array) {
         </p>
       </div>
       </a>
-      </div>`
+      `
     }).join('');
 }
          
@@ -120,5 +124,29 @@ function addGalleryItems(items) {
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
+
+function onGalleryClick(e) {
+  
+   e.preventDefault();
+    
+    if (e.target.nodeName !== "IMG") {
+        return
+    };
+    
+
+    let href = (e.target.closest('a').getAttribute('href'));
+    return href;
+    
+ 
+}
+   gallery.on('show.simplelightbox', function () {
+});
+
+gallery.on('error.simplelightbox', function (e) {
+	console.log(e);
+});
+
+
+
 
 
