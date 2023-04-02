@@ -30,6 +30,10 @@ header{
 position:relative;
 
 }
+
+a{
+  text-decoration: none;
+}
 .search-form{
   margin:0 auto;
   width:500px;
@@ -72,22 +76,32 @@ position:relative;
 .photo-card{
   display:block;
   width:270px;
-  border: solid 5px #212121;
-  
+  border: none;
+  padding-right: 3px;
+  padding-left: 3px;
+  padding-top:3px;
+  color:black;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 img{
-  width:270px;
+  width:264px;
   height: 200px;
   padding:none;
+
 }
 
 .info{
   
   display:flex;
   justify-content: center;
-  gap:5px;
-  font-size: 10px;
+  gap:10px;
+  font-size: 12px;
+}
+
+.info-item{
+  text-align: center;
+  
 }
 
 .load-more{
@@ -101,6 +115,7 @@ img{
   border-radius: 7%;
   box-shadow: #fafafa;
   margin: 0 auto;
+  margin-bottom: 100px;
   
 }
 

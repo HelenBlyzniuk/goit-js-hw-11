@@ -24,8 +24,9 @@ gallery.on('error.simplelightbox', function (e) {
 
 
 refs.formEl.addEventListener("submit", onFormSubmit);
-refs.btnLoadMore.addEventListener('click', onLoadMoreClick);
 refs.gallery.addEventListener('click', onGalleryClick);
+refs.btnLoadMore.addEventListener('click', onLoadMoreClick);
+
 
 let params = {
   page: 1,
@@ -108,16 +109,20 @@ function galleryMarkup(array) {
         <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
       <div class="info">
         <p class="info-item">
-          <b>Likes:${likes}</b>
+          <b>Likes:</b>
+          ${likes}
         </p>
         <p class="info-item">
-          <b>Views:${views}</b>
+          <b>Views:</b>
+          ${views}
         </p>
         <p class="info-item">
-          <b>Comments:${comments}</b>
+          <b>Comments:</b>
+          ${comments}
         </p>
         <p class="info-item">
-          <b>Downloads:${downloads}</b>
+          <b>Downloads:</b>
+          ${downloads}
         </p>
       </div>
       </a>
