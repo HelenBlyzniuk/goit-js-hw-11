@@ -33,12 +33,13 @@ let totalAmount = 0;
 async function onFormSubmit(e) {
  
   e.preventDefault();
-  
+   
   params.name = e.target.elements.searchQuery.value.trim();
   console.log(params.name);
   
   if (params.name !== currentName) {
     clearGallery();
+    
   }
 
   if (params.name === '') {
@@ -61,6 +62,7 @@ async function onFormSubmit(e) {
     addGalleryItems(galleryItems);
     params.page += 1;
     totalAmount -= 40;
+    gallery.refresh();
   }
 } 
 
@@ -94,7 +96,7 @@ function galleryMarkup(array) {
         views,
         comments,
         downloads }) => {
-      return `
+      return ` 
         <a href="${ webformatURL}">
         <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
       <div class="info">
