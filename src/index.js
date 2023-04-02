@@ -1,6 +1,7 @@
 
 import Notiflix from 'notiflix';
-import axios from 'axios';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 import './css/styles.css';
 import { fetchPhoto }  from './fetchPhoto.js'
 
@@ -12,6 +13,7 @@ const refs = {
     btnLoadMore:document.querySelector('.load-more'),
 }
 const form = document.querySelector('#search-form');
+let gallery = new SimpleLightbox('.gallery a');
 
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoadMore.addEventListener('click', onLoadMoreClick)
@@ -22,7 +24,9 @@ let params = {
   name:''
 }
  
+let currentName = '';
 let totalAmount = 0;
+
 async function onLoadMoreClick(e) {
   params.page += 1;
   totalAmount -= 40;
@@ -44,28 +48,34 @@ async function onLoadMoreClick(e) {
 async function onFormSubmit(e) {
  
   e.preventDefault();
-  let total = 0;
-  total+=e;
-  console.log(total)
-  params.name = e.target.elements.searchQuery.value.trim();
   
+  params.name = e.target.elements.searchQuery.value.trim();
+  console.log(params.name);
+  
+  if (params.name !== currentName) {
+    clearGallery();
+  }
+
   if (params.name === '') {
     Notiflix.Notify.failure('Enter data you want to find');
     return;
   }
+
+  currentName = params.name;
  
   const { data: { hits, totalHits } } = await fetchPhoto(params);
   totalAmount = totalHits;
   Notiflix.Notify.success(`We have found ${totalAmount} photos for you`);
-  console.log(totalHits);
+ 
+
   if (hits.length === 0) {
     Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');
   }
   else {
     const galleryItems = await galleryMarkup(hits);
-    refs.gallery.insertAdjacentHTML('beforeend', galleryItems);
-    refs.btnLoadMore.classList.remove('is-hidden');
-   
+    addGalleryItems(galleryItems);
+    params.page += 1;
+    totalAmount -= 40;
   }
 } 
 
@@ -80,7 +90,8 @@ function galleryMarkup(array) {
         views,
         comments,
         downloads }) => {
-        return ` <div class="photo-card">
+      return ` <div class="photo-card">
+        <a href="${ webformatURL}">
         <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
       <div class="info">
         <p class="info-item">
@@ -96,12 +107,18 @@ function galleryMarkup(array) {
           <b>Downloads:${downloads}</b>
         </p>
       </div>
+      </a>
       </div>`
     }).join('');
 }
          
+function addGalleryItems(items) {
+  refs.gallery.insertAdjacentHTML('beforeend', items);
+    refs.btnLoadMore.classList.remove('is-hidden');
+}
 
-
-
+function clearGallery() {
+  refs.gallery.innerHTML = '';
+}
 
 
