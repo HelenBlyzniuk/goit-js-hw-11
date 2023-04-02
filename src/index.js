@@ -12,7 +12,8 @@ const refs = {
     gallery: document.querySelector('.gallery'),
     btnLoadMore:document.querySelector('.load-more'),
 }
-const form = document.querySelector('#search-form');
+
+//  const form = document.querySelector('#search-form');
 refs.gallery.setAttribute('uk-lightbox', 'caption-position:bottom');
 let gallery = new SimpleLightbox('.gallery a');
    gallery.on('show.simplelightbox', function () {
@@ -43,7 +44,7 @@ async function onFormSubmit(e) {
   e.preventDefault();
    
   params.name = e.target.elements.searchQuery.value.trim();
-  console.log(params.name);
+  
   
   if (params.name !== currentName) {
     clearGallery();
@@ -153,7 +154,14 @@ function onGalleryClick(e) {
  
 }
 
+const { height: cardHeight } = document
+  .querySelector(".gallery")
+  .firstElementChild.getBoundingClientRect();
+console.log(cardHeight);
 
-
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: "smooth",
+});
 
 
