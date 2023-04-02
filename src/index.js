@@ -142,7 +142,6 @@ function onGalleryClick(e) {
         return
     };
     
-
     let href = (e.target.closest('a').getAttribute('href'));
     return href;
     
