@@ -154,14 +154,14 @@ function onGalleryClick(e) {
  
 }
 
-const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
-console.log(cardHeight);
+// const { height: cardHeight } = document
+//   .querySelector(".gallery")
+//   .firstElementChild.getBoundingClientRect();
+// console.log(cardHeight);
 
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: "smooth",
+// });
 
 
