@@ -27,23 +27,7 @@ let params = {
 let currentName = '';
 let totalAmount = 0;
 
-async function onLoadMoreClick(e) {
-  params.page += 1;
-  totalAmount -= 40;
-  
-  if (totalAmount <= 0) {
-    refs.btnLoadMore.classList.add('is-hidden');
-    Notiflix.Notify.warning('There is no photo left');
-    return
-    
-  } else {
-    const { data: {hits} } = await fetchPhoto(params);
-    const galleryItems = await galleryMarkup(hits);
-    refs.gallery.insertAdjacentHTML('beforeend', galleryItems);
-    Notiflix.Notify.success(`Still ${totalAmount} photos left`)
-  }
-  
-}
+
 
 async function onFormSubmit(e) {
  
@@ -79,7 +63,23 @@ async function onFormSubmit(e) {
   }
 } 
 
-
+async function onLoadMoreClick(e) {
+  params.page += 1;
+  totalAmount -= 40;
+  
+  if (totalAmount <= 0) {
+    refs.btnLoadMore.classList.add('is-hidden');
+    Notiflix.Notify.warning('There is no photo left');
+    return
+    
+  } else {
+    const { data: {hits} } = await fetchPhoto(params);
+    const galleryItems = await galleryMarkup(hits);
+    refs.gallery.insertAdjacentHTML('beforeend', galleryItems);
+    Notiflix.Notify.success(`Still ${totalAmount} photos left`)
+  }
+  
+}
 
 function galleryMarkup(array) {
     return array.map(({
