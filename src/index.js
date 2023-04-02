@@ -15,6 +15,13 @@ const refs = {
 const form = document.querySelector('#search-form');
 refs.gallery.setAttribute('uk-lightbox', 'caption-position:bottom');
 let gallery = new SimpleLightbox('.gallery a');
+   gallery.on('show.simplelightbox', function () {
+});
+
+gallery.on('error.simplelightbox', function (e) {
+	console.log(e);
+});
+
 
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoadMore.addEventListener('click', onLoadMoreClick);
@@ -97,7 +104,7 @@ function galleryMarkup(array) {
         comments,
         downloads }) => {
       return ` 
-        <a href="${ webformatURL}">
+        <a href="${ webformatURL}" class="photo-card">
         <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
       <div class="info">
         <p class="info-item">
@@ -141,12 +148,6 @@ function onGalleryClick(e) {
     
  
 }
-   gallery.on('show.simplelightbox', function () {
-});
-
-gallery.on('error.simplelightbox', function (e) {
-	console.log(e);
-});
 
 
 
