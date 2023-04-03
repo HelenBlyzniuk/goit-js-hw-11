@@ -27,6 +27,7 @@ gallery.on('error.simplelightbox', function (e) {
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.gallery.addEventListener('click', onGalleryClick);
 refs.btnLoadMore.addEventListener('click', onLoadMoreClick);
+window.addEventListener('scroll', onScroll);
 
 
 let params = {
@@ -130,7 +131,20 @@ function galleryMarkup(array) {
       `
     }).join('');
 }
-         
+   
+function onScroll(e) {
+  const { height: cardHeight } = document
+  .querySelector(".gallery")
+  .firstElementChild.getBoundingClientRect();
+console.log(cardHeight);
+
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: "smooth",
+});
+}
+
+
 function addGalleryItems(items) {
   refs.gallery.insertAdjacentHTML('beforeend', items);
     refs.btnLoadMore.classList.remove('is-hidden');
@@ -154,14 +168,6 @@ function onGalleryClick(e) {
  
 }
 
-// const { height: cardHeight } = document
-//   .querySelector(".gallery")
-//   .firstElementChild.getBoundingClientRect();
-// console.log(cardHeight);
 
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: "smooth",
-// });
 
 
